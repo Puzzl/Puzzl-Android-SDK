@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">library</string>
+    <string name="onboarding_info">\"Company\" uses Puzzl to collect required onboarding information.\n\nThis process should take only 2 minutes.</string>
+    <string name="steps_info">3-step Onboarding:\n\n1. Fill in profile information\n2. Verify your ID\n3. Fill in remaining fields of paperwork </string>
+    <string name="start">Start</string>
+    <string name="profile_info">Profile Information</string>
+    <string name="first_name">First name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="address">Address</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="zip">Zip</string>
+    <string name="last_name">Last name</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="create_account">Create Account</string>
+    <string name="verify_documents">Verify Documents</string>
+    <string name="choose_documentation">Choose Documentation</string>
+    <string name="please_have_ids">(Please have IDs readily available)</string>
+    <string name="create_a_puzzle_account">Create a Puzzl account to see paystub information</string>
+    <string name="drivers_license">Drivers License AND Social\nSecurity Card</string>
+    <string name="passport">Passport</string>
+    <string name="social_security_number">Social Security Number</string>
+    <string name="mi">MI</string>
+    <string name="terms_and_conditions">By clicking \'Start\' you agree to our\n<a href="https://app.termly.io/document/privacy-policy/2156d2d7-2f9c-4421-88f0-30ce5d0fb71a">Privacy Policy</a> and <a href="https://app.termly.io/document/terms-of-use-for-saas/f27d8443-ec86-4ebb-9105-414a75b021ec">Terms of Services</a> </string>
+</resources>

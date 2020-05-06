@@ -1,0 +1,3 @@
+rootProject.name='PuzzleSample'
+include ':app'
+include ':puzzle_library'
