@@ -24,4 +24,7 @@
     <string name="social_security_number">Social Security Number</string>
     <string name="mi">MI</string>
     <string name="terms_and_conditions">By clicking \'Start\' you agree to our\n<a href="https://app.termly.io/document/privacy-policy/2156d2d7-2f9c-4421-88f0-30ce5d0fb71a">Privacy Policy</a> and <a href="https://app.termly.io/document/terms-of-use-for-saas/f27d8443-ec86-4ebb-9105-414a75b021ec">Terms of Services</a> </string>
+    <string name="thank_you_for_filling_out_your_information">Thank you for filling out your information!</string>
+    <string name="you_are_now_successfully_onboarded_onto_puzzl_you_are_now_able_to_get_paid_using_puzzl">You are now successfully onboarded onto Puzzl. You are now able to get paid using Puzzl!</string>
+    <string name="finish">Finish</string>
 </resources>

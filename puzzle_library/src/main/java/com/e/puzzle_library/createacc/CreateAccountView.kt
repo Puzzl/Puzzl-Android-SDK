@@ -8,4 +8,5 @@ interface CreateAccountView{
     fun showEmptyFields(field : TextInputEditText)
     fun confirmPasswordError()
     fun showHellosign()
+    fun showFinishScreen()
 }

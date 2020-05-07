@@ -162,6 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
+                    android:buttonTint="@color/blue"
                     android:theme="@style/MyRadioButton"
                     android:text="@string/drivers_license"
                     android:textColor="@android:color/black"
@@ -174,6 +175,7 @@
                     android:paddingLeft="5dp"
                     android:theme="@style/MyRadioButton"
                     android:text="@string/passport"
+                    android:buttonTint="@color/blue"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
             </RadioGroup>

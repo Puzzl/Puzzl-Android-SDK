@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.DatePicker
 import com.e.puzzle_library.R
 import com.google.android.material.textfield.TextInputEditText
@@ -16,13 +17,17 @@ import kotlinx.android.synthetic.main.activity_info.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class InfoActivity : Activity(),InfoView,DatePickerDialog.OnDateSetListener {
+class InfoActivity : AppCompatActivity(),InfoView,DatePickerDialog.OnDateSetListener {
     lateinit var presenter: InfoPresenter
     private val inputDate = SimpleDateFormat("d/M/yyyy")
     val outputDate = SimpleDateFormat("yyyy-MM-dd")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (getSupportActionBar() != null ) getSupportActionBar()?.hide()
+        this.getWindow().setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_info)
         presenter = InfoPresenter(this)
 

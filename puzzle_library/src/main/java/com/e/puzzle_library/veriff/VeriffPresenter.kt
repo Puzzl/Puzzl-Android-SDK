@@ -1,5 +1,6 @@
 package com.library.veriff
 
+import com.e.puzzle_library.Constants
 import com.library.network.model.CreateSessionModel
 import com.library.network.model.Document
 import com.library.network.model.Person
@@ -26,7 +27,9 @@ class VeriffPresenter (private val repository : VeriffRepository,private val vie
                 )
             )
         ).observeOn(AndroidSchedulers.mainThread()).subscribe({
-                result -> view.startVeriff(result.verification.sessionToken,result.verification.url)
+                result ->
+            PuzzleSingleton.veriff = result.verification
+            if (document.equals(Constants.PASSPORT ))view.startVeriff(result.verification.sessionToken,result.verification.url) else view.checkPermission()
         },{error -> view.error("Oops,something went wrong!")}))
     }
 
@@ -34,7 +37,7 @@ class VeriffPresenter (private val repository : VeriffRepository,private val vie
 
     fun handleVeriffResult(statusCode : Int,sessionToken : String){
         if (statusCode == VeriffConstants.STATUS_USER_FINISHED) {
-            view.successVeriff(sessionToken)
+            view.signW2()
         } else if (statusCode == VeriffConstants.STATUS_ERROR_NO_IDENTIFICATION_METHODS_AVAILABLE) {
             view.error("No identifications methods available")
         } else if (statusCode == VeriffConstants.STATUS_ERROR_SETUP) {

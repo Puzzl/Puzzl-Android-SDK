@@ -1,5 +1,6 @@
 package com.library.createacc
 
+import com.e.puzzle_library.network.model.NewWorkerRequest
 import com.e.puzzle_library.network.model.SignW2Response
 import com.google.android.material.textfield.TextInputEditText
 import com.library.network.model.SignW2Request
@@ -14,7 +15,7 @@ class CreateAccountPresenter (private val repository : PuzzlRepository,private  
     fun signW2(signW2Request: SignW2Request){
         disposable.add(repository.signW2(signW2Request).observeOn(AndroidSchedulers.mainThread()).subscribe({
             result ->
-            PuzzleSingleton.hellosign = result
+                PuzzleSingleton.hellosign = result
             view.showHellosign()
         },{error -> }))
     }
@@ -23,6 +24,12 @@ class CreateAccountPresenter (private val repository : PuzzlRepository,private  
         views.add(email)
         views.add(password)
         views.add(confirmPassword)
+    }
+
+    fun createNewWorker(newWorker : NewWorkerRequest){
+        disposable.add(repository.createWorker(newWorker).observeOn(AndroidSchedulers.mainThread()).subscribe({
+            result -> view.showFinishScreen()
+        },{error -> }))
     }
 
     fun checkPassword(password : String,confirmPassword : String) : Boolean{
@@ -42,4 +49,6 @@ class CreateAccountPresenter (private val repository : PuzzlRepository,private  
         }
         return true
     }
+
+    fun destroyPresenter() = disposable.dispose()
 }

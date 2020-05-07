@@ -1,6 +1,7 @@
 package com.library.network.api
 
 
+import com.e.puzzle_library.network.model.NewWorkerRequest
 import com.e.puzzle_library.network.model.SignW2Response
 import com.library.network.model.SignW2Request
 import com.library.network.model.businessName.BusinessNameResponse
@@ -18,4 +19,6 @@ interface PuzzlApi {
     fun getWorkerInfo(@Query("companyID") companyId : String,@Query("id") id : String) : io.reactivex.Observable<WorkerInfoResponse>
     @POST("signW2")
     fun signW2(@Body signInW2 : SignW2Request) : io.reactivex.Observable<SignW2Response>
+    @POST("onboardWorker")
+    fun createWorker(@Body newWorker  : NewWorkerRequest) : io.reactivex.Observable<ResponseBody>
 }

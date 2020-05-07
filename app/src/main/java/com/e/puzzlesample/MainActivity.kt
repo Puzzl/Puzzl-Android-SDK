@@ -12,6 +12,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        check_library.setOnClickListener { startActivity(Intent(this,OnBoardingActivity::class.java)) }
+         val PUZZL_LIVE_API_KEY = "ec8317abe03e4989a33a971b547742a1"
+
+        check_library.setOnClickListener {
+            val intent = Intent(this,OnBoardingActivity::class.java)
+            intent.putExtra("api_key",PUZZL_LIVE_API_KEY)
+            startActivity(intent)
+        }
     }
 }

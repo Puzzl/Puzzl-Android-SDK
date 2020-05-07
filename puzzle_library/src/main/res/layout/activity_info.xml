@@ -154,6 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:theme="@style/TextInputStyle"
+                android:hint="***"
                 app:layout_constraintStart_toStartOf="@+id/social_info"
                 app:layout_constraintTop_toBottomOf="@+id/social_info">
 
@@ -172,6 +173,7 @@
                 android:layout_height="wrap_content"
                 android:theme="@style/TextInputStyle"
                 android:layout_marginStart="16dp"
+                android:hint="**"
                 app:layout_constraintBottom_toBottomOf="@+id/outlinedTextField_social_first"
                 app:layout_constraintStart_toEndOf="@+id/outlinedTextField_social_first"
                 app:layout_constraintTop_toTopOf="@+id/outlinedTextField_social_first">
@@ -191,6 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:theme="@style/TextInputStyle"
+                android:hint="****"
                 app:layout_constraintBottom_toBottomOf="@+id/outlinedTextField_social_second"
                 app:layout_constraintStart_toEndOf="@+id/outlinedTextField_social_second"
                 app:layout_constraintTop_toTopOf="@+id/outlinedTextField_social_second">

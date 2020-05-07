@@ -20,7 +20,8 @@ import kotlinx.android.synthetic.main.onboarding_layout.*
 import javax.inject.Inject
 
 
-class OnBoardingActivity : Activity(),OnBoardingView {
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+class OnBoardingActivity : AppCompatActivity(),OnBoardingView {
 
     @Inject lateinit var puzzlRepository: PuzzlRepository
     @Inject lateinit var sessionRepository: VeriffRepository
@@ -29,14 +30,23 @@ class OnBoardingActivity : Activity(),OnBoardingView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (getSupportActionBar() != null ) getSupportActionBar()?.hide()
+        this.getWindow().setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
         AndroidInjection.inject(this)
         setContentView(R.layout.onboarding_layout)
+
+        if (intent.getStringExtra("api_key") != null) PuzzleSingleton.api_key = intent.getStringExtra("api_key") else throw NullPointerException("Puzzle Api Key is null")
+
         presenter = OnBoardingPresenter(puzzlRepository,this)
 
 
         terms.movementMethod = LinkMovementMethod.getInstance()
 
         close_app.setOnClickListener { finishAffinity() }
+
+
         start.setOnClickListener { startActivity(Intent(this, InfoActivity::class.java)) }
 
         presenter.getUserInfo(Constants.PUZZL_COMPANY_ID)

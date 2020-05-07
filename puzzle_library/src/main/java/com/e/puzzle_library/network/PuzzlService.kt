@@ -3,6 +3,7 @@ package com.library.network
 import com.e.puzzle_library.Constants
 import com.library.network.api.PuzzlApi
 import com.library.network.api.VeriffApi
+import com.library.singletons.PuzzleSingleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -59,7 +60,7 @@ private class SessionInterceptor (): Interceptor {
         val response = chain.proceed(request)
         return response
     }
-    private fun Request.rebuildWithToken () = this.newBuilder().header("Authorization","Bearer ${Constants.PUZZL_LIVE_API_KEY}").build()
+    private fun Request.rebuildWithToken () = this.newBuilder().header("Authorization","Bearer ${PuzzleSingleton.api_key}").build()
 }
 
 private class InterceptorVeriff (): Interceptor {
