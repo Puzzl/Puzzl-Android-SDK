@@ -110,7 +110,7 @@ class CreateAccountActivity : AppCompatActivity(), VeriffView,CreateAccountView,
             val statusCode = data.getIntExtra(VeriffConstants.INTENT_EXTRA_STATUS,Integer.MIN_VALUE)
             val sessionCode = data.getStringExtra(VeriffConstants.INTENT_EXTRA_SESSION_URL)
             presenterVeriff.handleVeriffResult(statusCode,sessionCode)
-        }else if (requestCode == Constants.HELLOSIGN_REQUEST_CODE){
+        }else if (requestCode == Constants.HELLOSIGN_REQUEST_CODE && resultCode == Activity.RESULT_OK){
             presenterCreateAcc.createNewWorker(NewWorkerRequest(Constants.PUZZL_COMPANY_ID,Constants.PUZZL_WORKER_ID,UserSingleton.firstName,UserSingleton.lastName,
             UserSingleton.middle_initial,UserSingleton.dob,PuzzleSingleton.workerInfoModel.title,UserSingleton.address,UserSingleton.city,UserSingleton.state,
                 UserSingleton.zip,UserSingleton.ssn,UserSingleton.last4_ssn,UserSingleton.email,UserSingleton.password,PuzzleSingleton.workerInfoModel.default_wage,
