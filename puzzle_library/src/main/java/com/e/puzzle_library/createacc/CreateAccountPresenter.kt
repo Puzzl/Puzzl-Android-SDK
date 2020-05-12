@@ -13,11 +13,13 @@ class CreateAccountPresenter (private val repository : PuzzlRepository,private  
     private val disposable  = CompositeDisposable()
     private val views = mutableListOf<TextInputEditText>()
     fun signW2(signW2Request: SignW2Request){
+        view.showProgressbar()
         disposable.add(repository.signW2(signW2Request).observeOn(AndroidSchedulers.mainThread()).subscribe({
             result ->
+            view.hintProgressBar()
                 PuzzleSingleton.hellosign = result
             view.showHellosign()
-        },{error -> }))
+        },{error -> view.hintProgressBar()}))
     }
 
     fun initFields(email : TextInputEditText, password : TextInputEditText, confirmPassword : TextInputEditText){
@@ -27,9 +29,12 @@ class CreateAccountPresenter (private val repository : PuzzlRepository,private  
     }
 
     fun createNewWorker(newWorker : NewWorkerRequest){
+        view.showProgressbar()
         disposable.add(repository.createWorker(newWorker).observeOn(AndroidSchedulers.mainThread()).subscribe({
-            result -> view.showFinishScreen()
-        },{error -> }))
+            result ->
+            view.hintProgressBar()
+            view.showFinishScreen()
+        },{error -> view.hintProgressBar()}))
     }
 
     fun checkPassword(password : String,confirmPassword : String) : Boolean{

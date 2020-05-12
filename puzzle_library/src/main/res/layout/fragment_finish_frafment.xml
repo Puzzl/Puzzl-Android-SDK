@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FinishActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FinishFragment">
+
     <FrameLayout
         android:id="@+id/close_app"
         android:layout_width="40dp"
@@ -58,7 +59,7 @@
 
 
     <Button
-        android:id="@+id/start"
+        android:id="@+id/finish"
         android:layout_width="140dp"
         android:layout_height="60dp"
         android:backgroundTint="@color/blue"
@@ -70,5 +71,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

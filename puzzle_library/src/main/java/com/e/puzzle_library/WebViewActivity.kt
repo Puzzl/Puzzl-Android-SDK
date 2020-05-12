@@ -26,7 +26,7 @@ class WebViewActivity : AppCompatActivity() {
 
         webview.settings.javaScriptEnabled = true
 
-        webview.loadUrl("http://elasticbeanstalk-us-east-1-775525006575.s3-website-us-east-1.amazonaws.com/")
+        webview.loadUrl(createUrl())
 
         webview.addJavascriptInterface(WebViewJavascriptInterface(this),"callbackHandler")
     }
@@ -51,6 +51,11 @@ class WebViewActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        testFisnish()
+    }
+
+    private fun testFisnish() {
+        setResult(Activity.RESULT_OK)
         finish()
     }
 }

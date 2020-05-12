@@ -1,14 +1,12 @@
 package com.library.di
 
-import com.library.createacc.CreateAccountActivity
-import com.library.onboarding.OnBoardingActivity
+import com.e.puzzle_library.VeriffActivity
+import com.e.puzzle_library.di.FragmentBuilderModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
 interface ActivitiesBuilderModule {
-    @ContributesAndroidInjector
-    fun contributeOnBoardingActivity() : OnBoardingActivity
-    @ContributesAndroidInjector
-    fun contributeCreateAccountActivity() : CreateAccountActivity
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    fun contributeVeriffActivity() : VeriffActivity
 }

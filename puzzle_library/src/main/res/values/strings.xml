@@ -27,4 +27,7 @@
     <string name="thank_you_for_filling_out_your_information">Thank you for filling out your information!</string>
     <string name="you_are_now_successfully_onboarded_onto_puzzl_you_are_now_able_to_get_paid_using_puzzl">You are now successfully onboarded onto Puzzl. You are now able to get paid using Puzzl!</string>
     <string name="finish">Finish</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

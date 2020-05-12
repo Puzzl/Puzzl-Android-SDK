@@ -14,6 +14,7 @@ import javax.inject.Singleton
     NetworkModule::class])
 @Singleton
 interface AppComponent {
-    fun inject(yoogenApp: PuzzleApplication)
+    fun inject(puzzleApp: PuzzleApplication)
     fun getPuzzleRepository(): PuzzlRepository
 }
+

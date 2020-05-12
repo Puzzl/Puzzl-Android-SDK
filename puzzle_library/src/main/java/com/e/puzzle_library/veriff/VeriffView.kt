@@ -5,4 +5,6 @@ interface VeriffView {
     fun error(error : String)
     fun signW2()
     fun checkPermission()
+    fun showProgressbar()
+    fun hintProgressBar()
 }

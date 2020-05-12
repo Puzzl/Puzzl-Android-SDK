@@ -1,24 +1,24 @@
-package com.library.createacc
+package com.e.puzzle_library.createacc
 
 import android.Manifest
-import android.R.attr.bitmap
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.Window
-import android.view.WindowManager
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.RadioGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.e.puzzle_library.Constants
-import com.e.puzzle_library.FinishActivity
-import com.e.puzzle_library.R
-import com.e.puzzle_library.WebViewActivity
+import com.e.puzzle_library.*
+
 import com.e.puzzle_library.network.model.NewWorkerRequest
 import com.google.android.material.textfield.TextInputEditText
+import com.library.createacc.CreateAccountPresenter
+import com.library.createacc.CreateAccountView
 import com.library.network.model.SignW2Request
 import com.library.network.repository.PuzzlRepository
 import com.library.network.repository.VeriffRepository
@@ -27,32 +27,37 @@ import com.library.singletons.UserSingleton
 import com.library.veriff.VeriffPresenter
 import com.library.veriff.VeriffView
 import com.tbruyelle.rxpermissions2.RxPermissions
-import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_create_account.*
+import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_create_account.*
 import mobi.lab.veriff.data.Veriff
 import mobi.lab.veriff.data.VeriffConstants
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 
-class CreateAccountActivity : AppCompatActivity(), VeriffView,CreateAccountView, RadioGroup.OnCheckedChangeListener {
-    @Inject
-    lateinit var veriffRepository: VeriffRepository
+class CreateAccountFragment : Fragment(), VeriffView, CreateAccountView, RadioGroup.OnCheckedChangeListener {
+    @Inject lateinit var veriffRepository: VeriffRepository
     @Inject lateinit var puzzlRepository: PuzzlRepository
     lateinit var presenterCreateAcc : CreateAccountPresenter
     lateinit var presenterVeriff : VeriffPresenter
     private var document = Constants.PASSPORT
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        AndroidInjection.inject(this)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        if (getSupportActionBar() != null ) getSupportActionBar()?.hide()
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(R.layout.activity_create_account)
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_create_account, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         presenterVeriff = VeriffPresenter(veriffRepository,this)
         presenterCreateAcc = CreateAccountPresenter(puzzlRepository,this)
-        close_app.setOnClickListener { finishAffinity() }
+        close_app.setOnClickListener { (activity as VeriffActivity).finishSetResult()}
 
         create_account.setOnClickListener {
             if (presenterCreateAcc.checkEmptyFields() && presenterCreateAcc.checkPassword(edt_password.text.toString(),edt_confirm_password.text.toString())){
@@ -69,21 +74,32 @@ class CreateAccountActivity : AppCompatActivity(), VeriffView,CreateAccountView,
 
     private fun showCamera(){
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                startActivityForResult(takePictureIntent, Constants.TAKE_PHOTO)
+            context?.packageManager?.let {
+                takePictureIntent.resolveActivity(it)?.also {
+                    startActivityForResult(takePictureIntent, Constants.TAKE_PHOTO)
+                }
             }
         }
     }
 
+    override fun showProgressbar() {
+        progressbar.visibility = View.VISIBLE
+    }
+
+    override fun hintProgressBar(){
+        progressbar.visibility = View.GONE
+    }
+
     override fun startVeriff(sessionToken: String, url: String) {
         val veriffBuilder = Veriff.Builder(url,sessionToken)
-        veriffBuilder.launch(this,Constants.VERIFF_REQUEST_CODE)
+        veriffBuilder.launch(activity,Constants.VERIFF_REQUEST_CODE)
     }
 
     override fun signW2() {
         getUserInfo()
-        presenterCreateAcc.signW2(SignW2Request(Constants.PUZZL_COMPANY_ID,
-            UserSingleton.firstName, UserSingleton.last4_ssn,"Vlad",PuzzleSingleton.workerInfoModel.title,
+        presenterCreateAcc.signW2(
+            SignW2Request(Constants.PUZZL_COMPANY_ID,
+            UserSingleton.firstName, UserSingleton.last4_ssn,"Vlad", PuzzleSingleton.workerInfoModel.title,
             UserSingleton.address,UserSingleton.city,UserSingleton.state,UserSingleton.zip,UserSingleton.ssn,UserSingleton.email,PuzzleSingleton.workerInfoModel.default_wage,
             PuzzleSingleton.workerInfoModel.default_ot_wage,PuzzleSingleton.workerInfoModel.createdAt)
         )
@@ -96,7 +112,7 @@ class CreateAccountActivity : AppCompatActivity(), VeriffView,CreateAccountView,
     }
 
     override fun error(error : String) {
-        Toast.makeText(this,error,Toast.LENGTH_LONG).show()
+        Toast.makeText(context,error,Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroy() {
@@ -106,16 +122,19 @@ class CreateAccountActivity : AppCompatActivity(), VeriffView,CreateAccountView,
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.VERIFF_REQUEST_CODE && data != null){
             val statusCode = data.getIntExtra(VeriffConstants.INTENT_EXTRA_STATUS,Integer.MIN_VALUE)
             val sessionCode = data.getStringExtra(VeriffConstants.INTENT_EXTRA_SESSION_URL)
             presenterVeriff.handleVeriffResult(statusCode,sessionCode)
-        }else if (requestCode == Constants.HELLOSIGN_REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            presenterCreateAcc.createNewWorker(NewWorkerRequest(Constants.PUZZL_COMPANY_ID,Constants.PUZZL_WORKER_ID,UserSingleton.firstName,UserSingleton.lastName,
-            UserSingleton.middle_initial,UserSingleton.dob,PuzzleSingleton.workerInfoModel.title,UserSingleton.address,UserSingleton.city,UserSingleton.state,
+        }else if (requestCode == Constants.HELLOSIGN_REQUEST_CODE ){
+            presenterCreateAcc.createNewWorker(
+                NewWorkerRequest(Constants.PUZZL_COMPANY_ID,Constants.PUZZL_WORKER_ID,UserSingleton.firstName,UserSingleton.lastName,
+                UserSingleton.middle_initial,UserSingleton.dob,PuzzleSingleton.workerInfoModel.title,UserSingleton.address,UserSingleton.city,UserSingleton.state,
                 UserSingleton.zip,UserSingleton.ssn,UserSingleton.last4_ssn,UserSingleton.email,UserSingleton.password,PuzzleSingleton.workerInfoModel.default_wage,
-            PuzzleSingleton.workerInfoModel.default_ot_wage,PuzzleSingleton.workerInfoModel.createdAt,PuzzleSingleton.hellosign.employee_sigId,PuzzleSingleton.hellosign.company_sigId,
-            PuzzleSingleton.hellosign.signature_request_id,PuzzleSingleton.veriff.id,null))
+                PuzzleSingleton.workerInfoModel.default_ot_wage,PuzzleSingleton.workerInfoModel.createdAt,PuzzleSingleton.hellosign.employee_sigId,PuzzleSingleton.hellosign.company_sigId,
+                PuzzleSingleton.hellosign.signature_request_id,PuzzleSingleton.veriff.id,null)
+            )
         }else if (requestCode == Constants.TAKE_PHOTO && data != null && resultCode == Activity.RESULT_OK){
             val imageBitmap = data.extras?.get("data") as Bitmap
             val byteArrayOutputStream = ByteArrayOutputStream()
@@ -123,7 +142,6 @@ class CreateAccountActivity : AppCompatActivity(), VeriffView,CreateAccountView,
             val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
             signW2()
         }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun getUserInfo(){
@@ -144,10 +162,10 @@ class CreateAccountActivity : AppCompatActivity(), VeriffView,CreateAccountView,
     }
 
     override fun showHellosign() {
-        startActivityForResult(Intent(this,WebViewActivity::class.java),Constants.HELLOSIGN_REQUEST_CODE)
+        startActivityForResult(Intent(context, WebViewActivity::class.java),Constants.HELLOSIGN_REQUEST_CODE)
     }
 
     override fun showFinishScreen() {
-        startActivity(Intent(this,FinishActivity::class.java))
+        (activity as VeriffActivity).replaceFragment(FinishFragment(),true)
     }
 }
