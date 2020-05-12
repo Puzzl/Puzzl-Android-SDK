@@ -127,14 +127,38 @@ class CreateAccountFragment : Fragment(), VeriffView, CreateAccountView, RadioGr
             val statusCode = data.getIntExtra(VeriffConstants.INTENT_EXTRA_STATUS,Integer.MIN_VALUE)
             val sessionCode = data.getStringExtra(VeriffConstants.INTENT_EXTRA_SESSION_URL)
             presenterVeriff.handleVeriffResult(statusCode,sessionCode)
-        }else if (requestCode == Constants.HELLOSIGN_REQUEST_CODE ){
-            presenterCreateAcc.createNewWorker(
-                NewWorkerRequest(Constants.PUZZL_COMPANY_ID,Constants.PUZZL_WORKER_ID,UserSingleton.firstName,UserSingleton.lastName,
-                UserSingleton.middle_initial,UserSingleton.dob,PuzzleSingleton.workerInfoModel.title,UserSingleton.address,UserSingleton.city,UserSingleton.state,
-                UserSingleton.zip,UserSingleton.ssn,UserSingleton.last4_ssn,UserSingleton.email,UserSingleton.password,PuzzleSingleton.workerInfoModel.default_wage,
-                PuzzleSingleton.workerInfoModel.default_ot_wage,PuzzleSingleton.workerInfoModel.createdAt,PuzzleSingleton.hellosign.employee_sigId,PuzzleSingleton.hellosign.company_sigId,
-                PuzzleSingleton.hellosign.signature_request_id,PuzzleSingleton.veriff.id,null)
-            )
+        }else if (requestCode == Constants.HELLOSIGN_REQUEST_CODE ) {
+            if (resultCode == Activity.RESULT_OK) {
+                presenterCreateAcc.createNewWorker(
+                    NewWorkerRequest(
+                        Constants.PUZZL_COMPANY_ID,
+                        Constants.PUZZL_WORKER_ID,
+                        UserSingleton.firstName,
+                        UserSingleton.lastName,
+                        UserSingleton.middle_initial,
+                        UserSingleton.dob,
+                        PuzzleSingleton.workerInfoModel.title,
+                        UserSingleton.address,
+                        UserSingleton.city,
+                        UserSingleton.state,
+                        UserSingleton.zip,
+                        UserSingleton.ssn,
+                        UserSingleton.last4_ssn,
+                        UserSingleton.email,
+                        UserSingleton.password,
+                        PuzzleSingleton.workerInfoModel.default_wage,
+                        PuzzleSingleton.workerInfoModel.default_ot_wage,
+                        PuzzleSingleton.workerInfoModel.createdAt,
+                        PuzzleSingleton.hellosign.employee_sigId,
+                        PuzzleSingleton.hellosign.company_sigId,
+                        PuzzleSingleton.hellosign.signature_request_id,
+                        PuzzleSingleton.veriff.id,
+                        null
+                    )
+                )
+            }else{
+                Toast.makeText(context,"You didn't fill in the document",Toast.LENGTH_LONG).show()
+            }
         }else if (requestCode == Constants.TAKE_PHOTO && data != null && resultCode == Activity.RESULT_OK){
             val imageBitmap = data.extras?.get("data") as Bitmap
             val byteArrayOutputStream = ByteArrayOutputStream()

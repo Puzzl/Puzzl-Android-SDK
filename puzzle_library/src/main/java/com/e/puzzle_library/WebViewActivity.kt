@@ -28,15 +28,14 @@ class WebViewActivity : AppCompatActivity() {
 
         webview.loadUrl(createUrl())
 
-        webview.addJavascriptInterface(WebViewJavascriptInterface(this),"callbackHandler")
+        webview.addJavascriptInterface(WebViewJavascriptInterface(this),"Android")
     }
 
     class WebViewJavascriptInterface(private val mContext: Context) {
         @JavascriptInterface
-            fun postMessage(message: String?) {
+            fun parseHellosign(message: String?) {
             (mContext as WebViewActivity).setResult(Activity.RESULT_OK)
             mContext.finish()
-            Toast.makeText(mContext, message, Toast.LENGTH_LONG).show()
         }
     }
     private fun createUrl () : String{
@@ -51,11 +50,9 @@ class WebViewActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        testFisnish()
-    }
-
-    private fun testFisnish() {
-        setResult(Activity.RESULT_OK)
+        setResult(Activity.RESULT_CANCELED)
         finish()
     }
+
+
 }
