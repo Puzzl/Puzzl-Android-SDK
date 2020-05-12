@@ -8,6 +8,7 @@ import com.e.puzzle_library.VeriffActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    val REQUEST_CODE  = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,13 +19,13 @@ class MainActivity : AppCompatActivity() {
         check_library.setOnClickListener {
             val intent = Intent(this,VeriffActivity::class.java)
             intent.putExtra("api_key",PUZZL_LIVE_API_KEY)
-            startActivityForResult(intent,1)
+            startActivityForResult(intent,REQUEST_CODE)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1 && data != null ) {
+        if (requestCode == REQUEST_CODE && data != null ) {
             Toast.makeText(this,data.getStringExtra("result"),Toast.LENGTH_LONG).show()
         }
     }

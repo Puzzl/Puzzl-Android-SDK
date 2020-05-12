@@ -39,7 +39,7 @@ class VeriffActivity : AppCompatActivity(),HasSupportFragmentInjector {
 
     fun finishSetResult (){
         val intent = Intent()
-        intent.putExtra("result","User close app")
+        intent.putExtra("result","User cancelled the session.")
         setResult(Activity.RESULT_OK,intent)
         finish()
     }
