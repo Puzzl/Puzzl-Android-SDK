@@ -9,7 +9,8 @@ Puzzl iOS SDK for rendering Puzzl's Employee Onboarding flow
 1. Add the puzzle library (puzzle_library) as a new model into your app. 
 1.1. Add `:puzzle_library` into `settings.gradle` :
 
-  ```include':puzzle_library'
+  ```
+    include':puzzle_library'
   ```
 1.2. Add the maven `{ url "https://cdn.veriff.me/android/" }`  and maven `{ url 'https://jitpack.io' }` to the `build.gradle`:
 
@@ -21,8 +22,8 @@ Puzzl iOS SDK for rendering Puzzl's Employee Onboarding flow
         maven { url "https://cdn.veriff.me/android/" }        
         maven { url 'https://jitpack.io' }    
       }
-    }```
-
+    }
+  ```
 1.3  Add the Puzzle SDK dependency to the application build.gradle file:
 
-  `implementation project(':puzzle_library')`
+`implementation project(':puzzle_library')`
