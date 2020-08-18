@@ -9,7 +9,7 @@ Add the puzzle library (puzzle_library) as a new model into your app.
 
 1. Add `:puzzle_library` into `settings.gradle` :
 
-  ```
+  ```gradle
     include':puzzle_library'
   ```
 2. Add the maven `{ url "https://cdn.veriff.me/android/" }`  and maven `{ url 'https://jitpack.io' }` to the `build.gradle`:
@@ -32,9 +32,10 @@ Add the puzzle library (puzzle_library) as a new model into your app.
 
 1. To use Puzzle SDK, you should open `VeriffActivity` from the Activity that you want to launch from and transmit the parameters `<api_key>`, `<employeeID>`, and `<companyID>` there using `startActivityForResult`: 
 
-  In the sample provided, we launch the Puzzl SDK from a button
+    In the sample provided, we launch the Puzzl SDK from a button
 
   ```Kotlin
+    val REQUEST_CODE  = 1
     val PUZZL_LIVE_API_KEY = "<YOUR_PUZZL_LIVE_API_KEY>"
     val PUZZL_EMPLOYEE_ID = "<YOUR_PUZZL_EMPLOYEE_ID>"
     val PUZZL_COMPANY_ID = "<YOUR_PUZZL_COMPANY_ID>"
@@ -49,7 +50,7 @@ Add the puzzle library (puzzle_library) as a new model into your app.
     }
   ```
 
-2. The Puzzle SDK the result of the work will be sent to `onActivityResult`:
+2. The Puzzle SDK will send a response code to `onActivityResult`:
 
   ```Kotlin
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
