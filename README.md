@@ -32,7 +32,7 @@ Add the puzzl library (puzzl_library) as a new model into your app.
 
 1. To use puzzl SDK, you should open `VeriffActivity` from the Activity that you want to launch from and transmit the parameters `<api_key>`, `<employeeID>`, and `<companyID>` there using `startActivityForResult`: 
 
-    In the sample provided, we launch the Puzzl SDK from a button
+    In the sample provided, we launch the Puzzl SDK from a button  
 
   ```Kotlin
     val REQUEST_CODE  = 1
