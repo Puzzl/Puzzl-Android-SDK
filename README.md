@@ -5,12 +5,12 @@ Puzzl iOS SDK for rendering Puzzl's Employee Onboarding flow
 
 ## Add Puzzl SDK to a project
 
-Add the puzzle library (puzzle_library) as a new model into your app. 
+Add the puzzl library (puzzl_library) as a new model into your app.
 
-1. Add `:puzzle_library` into `settings.gradle` :
+1. Add `:puzzl_library` into `settings.gradle` :
 
   ```gradle
-    include':puzzle_library'
+    include':puzzl_library'
   ```
 2. Add the maven `{ url "https://cdn.veriff.me/android/" }`  and maven `{ url 'https://jitpack.io' }` to the `build.gradle`:
 
@@ -24,13 +24,13 @@ Add the puzzle library (puzzle_library) as a new model into your app.
       }
     }
   ```
-3. Add the Puzzle SDK dependency to the application `build.gradle` file:
+3. Add the puzzl SDK dependency to the application `build.gradle` file:
 
-`implementation project(':puzzle_library')`
+`implementation project(':puzzl_library')`
 
 ## Implementing the Puzzl SDK
 
-1. To use Puzzle SDK, you should open `VeriffActivity` from the Activity that you want to launch from and transmit the parameters `<api_key>`, `<employeeID>`, and `<companyID>` there using `startActivityForResult`: 
+1. To use puzzl SDK, you should open `VeriffActivity` from the Activity that you want to launch from and transmit the parameters `<api_key>`, `<employeeID>`, and `<companyID>` there using `startActivityForResult`: 
 
     In the sample provided, we launch the Puzzl SDK from a button
 
@@ -50,7 +50,7 @@ Add the puzzle library (puzzle_library) as a new model into your app.
     }
   ```
 
-2. The Puzzle SDK will send a response code to `onActivityResult`:
+2. The puzzl SDK will send a response code to `onActivityResult`:
 
   ```Kotlin
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
