@@ -5,7 +5,7 @@ Puzzl iOS SDK for rendering Puzzl's Employee Onboarding flow
 
 ## Add Puzzl SDK to a project
 
-###Add the puzzle library (puzzle_library) as a new model into your app. 
+Add the puzzle library (puzzle_library) as a new model into your app. 
 
 1. Add `:puzzle_library` into `settings.gradle` :
 
@@ -27,3 +27,40 @@ Puzzl iOS SDK for rendering Puzzl's Employee Onboarding flow
 3. Add the Puzzle SDK dependency to the application `build.gradle` file:
 
 `implementation project(':puzzle_library')`
+
+## Implementing the Puzzl SDK
+
+1. To use Puzzle SDK, you should open `VeriffActivity` from the Activity that you want to launch from and transmit the parameters `<api_key>`, `<employeeID>`, and `<companyID>` there using `startActivityForResult`: 
+
+  In the sample provided, we launch the Puzzl SDK from a button
+
+  ```Kotlin
+    val PUZZL_LIVE_API_KEY = "<YOUR_PUZZL_LIVE_API_KEY>"
+    val PUZZL_EMPLOYEE_ID = "<YOUR_PUZZL_EMPLOYEE_ID>"
+    val PUZZL_COMPANY_ID = "<YOUR_PUZZL_COMPANY_ID>"
+
+
+    check_library.setOnClickListener {
+        val intent = Intent(this,VeriffActivity::class.java)
+        intent.putExtra("api_key",PUZZL_LIVE_API_KEY)
+        intent.putExtra("employeeID", PUZZL_EMPLOYEE_ID)
+        intent.putExtra("companyID", PUZZL_COMPANY_ID)
+        startActivityForResult(intent,REQUEST_CODE)
+    }
+  ```
+
+2. The Puzzle SDK the result of the work will be sent to `onActivityResult`:
+
+  ```Kotlin
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE && data != null ) {
+            Toast.makeText(this,data.getStringExtra("result"),Toast.LENGTH_LONG).show()
+        }
+    }
+  ```
+
+There will be two response codes:
+
+  `data.getStringExtra("result") == “success”` - *success*       
+  `data.getStringExtra("result") == “User cancelled the session.”` - *error*
