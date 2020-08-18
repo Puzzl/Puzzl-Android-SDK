@@ -1,11 +1,13 @@
 <div  style="text-align:center"><img src="/puzzl-logo.png" alt="Puzzl" width="200"/></div>
 
 # Welcome to Puzzl's Android SDK
-Puzzl iOS SDK for rendering Puzzl's Employee Onboarding flow
+Puzzl Android SDK for rendering Puzzl's Employee Onboarding flow
 
 ## Add Puzzl SDK to a project
 
-Add the puzzl library (puzzl_library) as a new model into your app.
+This repo is a sample application that includes the Puzzl Android SDK. To use the Puzzl SDK, copy the puzzl_library directory to your project. You can also run this repo on any device that runs Android 5.0 (Lollipop) or above.
+
+That being said, add the puzzl library (puzzl_library) as a new model into your app.
 
 1. Add `:puzzl_library` into `settings.gradle` :
 
