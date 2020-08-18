@@ -12,24 +12,37 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import mobi.lab.veriff.data.Veriff
 import mobi.lab.veriff.data.VeriffConstants
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.Calendar
+import java.util.TimeZone
 
 class VeriffPresenter (private val repository : VeriffRepository,private val view : VeriffView){
     private val disposable = CompositeDisposable()
+    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+
+
     fun startSession(document : String){
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         disposable.add(repository.getSession(
             CreateSessionModel(
                 Verification(
                     Person(UserSingleton.firstName,UserSingleton.lastName),
-                    Document(document,"US"),"en",PuzzleSingleton.workerInfoModel.createdAt
+                    Document(document,"US"),"en", sdf.format(Date()).toString()
                 )
             )
         ).observeOn(AndroidSchedulers.mainThread()).subscribe({
                 result ->
             PuzzleSingleton.veriff = result.verification
-            if (document.equals(Constants.PASSPORT ))view.startVeriff(result.verification.sessionToken,result.verification.url) else view.checkPermission()
+            if (document.equals(Constants.PASSPORT ))view.startVeriff(result.verification.sessionToken,result.verification.url)
+            else{
+                view.checkPermission()
+
+
+            }
+
         },{error -> view.error("Oops,something went wrong!")}))
     }
 

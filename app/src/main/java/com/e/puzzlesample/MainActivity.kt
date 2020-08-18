@@ -13,12 +13,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val PUZZL_LIVE_API_KEY = "ce1bc81624c943c6b47a9fbbac2aac53"
+        val PUZZL_EMPLOYEE_ID = "5f19d4537176de4e057d8a33"
+        val PUZZL_COMPANY_ID = "f93c5242527611ea8edb777ca61192b5"
 
-         val PUZZL_LIVE_API_KEY = "ec8317abe03e4989a33a971b547742a1"
 
         check_library.setOnClickListener {
             val intent = Intent(this,VeriffActivity::class.java)
             intent.putExtra("api_key",PUZZL_LIVE_API_KEY)
+            intent.putExtra("employeeID", PUZZL_EMPLOYEE_ID)
+            intent.putExtra("companyID", PUZZL_COMPANY_ID)
             startActivityForResult(intent,REQUEST_CODE)
         }
     }

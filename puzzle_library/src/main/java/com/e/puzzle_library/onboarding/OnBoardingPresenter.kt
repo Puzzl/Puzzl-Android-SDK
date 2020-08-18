@@ -9,6 +9,7 @@ class OnBoardingPresenter (val puzzlRepository: PuzzlRepository, val view : OnBo
     fun getUserInfo(companyId : String){
         disposable.add(puzzlRepository.getUserInfo(companyId).observeOn(AndroidSchedulers.mainThread()).subscribe({
             result -> view.saveBusinessName(result.data)
+
         },{error ->}))
     }
     fun getWorkerInfo(companyId : String,id : String){

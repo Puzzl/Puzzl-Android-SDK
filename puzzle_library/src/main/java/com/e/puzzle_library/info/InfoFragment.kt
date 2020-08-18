@@ -16,8 +16,12 @@ import com.e.puzzle_library.createacc.CreateAccountFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.library.info.InfoPresenter
 import com.library.info.InfoView
+import com.library.singletons.PuzzleSingleton
 import com.library.singletons.UserSingleton
+import kotlinx.android.synthetic.main.fragment_create_account.*
 import kotlinx.android.synthetic.main.fragment_info.*
+import kotlinx.android.synthetic.main.fragment_info.close_app
+import kotlinx.android.synthetic.main.fragment_info.create_account
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,10 +53,14 @@ class InfoFragment : Fragment(), InfoView, DatePickerDialog.OnDateSetListener {
             }
         }
 
-        presenter.initViews(edt_first_name,edt_last_name,edt_mi,edt_date,edt_social_first,edt_social_second,
+        presenter.initViews(edt_first_name,edt_last_name,edt_phone_number, edt_mi,edt_date,edt_social_first,edt_social_second,
             edt_social_third,edt_address,edt_city,edt_state,edt_zip)
 
+
         edt_date.setOnClickListener { createDateDialog() }
+        edt_first_name.setText(PuzzleSingleton.workerInfoModel.first_name)
+        edt_last_name.setText(PuzzleSingleton.workerInfoModel.last_name)
+
 
     }
 
@@ -63,6 +71,7 @@ class InfoFragment : Fragment(), InfoView, DatePickerDialog.OnDateSetListener {
     private fun setUserInfo(){
         UserSingleton.firstName = edt_first_name.text.toString()
         UserSingleton.lastName = edt_last_name.text.toString()
+        UserSingleton.phoneNumber = edt_phone_number.text.toString()
         UserSingleton.middle_initial = edt_mi.text.toString()
         UserSingleton.dob = edt_date.text.toString()
         UserSingleton.last4_ssn = edt_social_third.text.toString()

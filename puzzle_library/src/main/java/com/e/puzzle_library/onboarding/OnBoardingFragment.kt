@@ -65,6 +65,7 @@ class OnBoardingFragment : Fragment(),OnBoardingView {
 
     override fun saveBusinessName(businessName: BusinessNameModel) {
         PuzzleSingleton.businessModel = businessName
+        textView3.text = "Welcome to " + PuzzleSingleton.businessModel.business_name.toString() + "'s onboarding process!\n\nThis process should take only 2 minutes."
     }
 
     override fun saveWorkerInfo(workerInfoModel: WorkerInfoModel) {

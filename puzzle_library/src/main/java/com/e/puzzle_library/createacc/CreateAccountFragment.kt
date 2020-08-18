@@ -16,10 +16,14 @@ import android.widget.Toast
 import com.e.puzzle_library.*
 
 import com.e.puzzle_library.network.model.NewWorkerRequest
+import com.e.puzzle_library.network.model.WorkerPaperwork
+import com.e.puzzle_library.network.model.WorkerProfileInfo
+import com.e.puzzle_library.network.model.WorkerVerification
 import com.google.android.material.textfield.TextInputEditText
 import com.library.createacc.CreateAccountPresenter
 import com.library.createacc.CreateAccountView
 import com.library.network.model.SignW2Request
+import com.library.network.model.workerInfo.WorkerInfoModel
 import com.library.network.repository.PuzzlRepository
 import com.library.network.repository.VeriffRepository
 import com.library.singletons.PuzzleSingleton
@@ -31,7 +35,12 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_create_account.*
 import mobi.lab.veriff.data.Veriff
 import mobi.lab.veriff.data.VeriffConstants
+import okhttp3.*
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 
@@ -41,6 +50,8 @@ class CreateAccountFragment : Fragment(), VeriffView, CreateAccountView, RadioGr
     lateinit var presenterCreateAcc : CreateAccountPresenter
     lateinit var presenterVeriff : VeriffPresenter
     private var document = Constants.PASSPORT
+    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -54,6 +65,7 @@ class CreateAccountFragment : Fragment(), VeriffView, CreateAccountView, RadioGr
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         presenterVeriff = VeriffPresenter(veriffRepository,this)
         presenterCreateAcc = CreateAccountPresenter(puzzlRepository,this)
@@ -68,7 +80,7 @@ class CreateAccountFragment : Fragment(), VeriffView, CreateAccountView, RadioGr
         presenterCreateAcc.initFields(edt_email,edt_password,edt_confirm_password)
 
         radio_passport.isChecked = true
-
+        edt_email.setText(PuzzleSingleton.workerInfoModel.email)
         radioGroup.setOnCheckedChangeListener(this)
     }
 
@@ -97,11 +109,47 @@ class CreateAccountFragment : Fragment(), VeriffView, CreateAccountView, RadioGr
 
     override fun signW2() {
         getUserInfo()
+        presenterCreateAcc.submitWorkerProfileInfo(
+            WorkerProfileInfo(
+                Constants.PUZZL_COMPANY_ID,
+                Constants.PUZZL_WORKER_ID,
+                UserSingleton.firstName,
+                UserSingleton.lastName,
+                UserSingleton.middle_initial,
+                UserSingleton.dob,
+                UserSingleton.address,
+                UserSingleton.city,
+                UserSingleton.state,
+                UserSingleton.zip,
+                UserSingleton.ssn,
+                UserSingleton.phoneNumber,
+                UserSingleton.email,
+                UserSingleton.password
+            )
+        )
+        presenterCreateAcc.submitWorkerVerification(
+            WorkerVerification(
+                Constants.PUZZL_COMPANY_ID,
+                Constants.PUZZL_WORKER_ID,
+                PuzzleSingleton.veriff.id
+            )
+        )
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         presenterCreateAcc.signW2(
-            SignW2Request(Constants.PUZZL_COMPANY_ID,
-            UserSingleton.firstName, UserSingleton.last4_ssn,"Vlad", PuzzleSingleton.workerInfoModel.title,
-            UserSingleton.address,UserSingleton.city,UserSingleton.state,UserSingleton.zip,UserSingleton.ssn,UserSingleton.email,PuzzleSingleton.workerInfoModel.default_wage,
-            PuzzleSingleton.workerInfoModel.default_ot_wage,PuzzleSingleton.workerInfoModel.createdAt)
+            SignW2Request(
+                Constants.PUZZL_COMPANY_ID,
+                UserSingleton.firstName,
+                UserSingleton.lastName,
+                UserSingleton.middle_initial,
+                UserSingleton.address,
+                UserSingleton.city,
+                UserSingleton.state,
+                UserSingleton.zip,
+                UserSingleton.ssn,
+                UserSingleton.dob,
+                UserSingleton.email,
+                UserSingleton.phoneNumber
+            )
         )
     }
 
@@ -129,42 +177,95 @@ class CreateAccountFragment : Fragment(), VeriffView, CreateAccountView, RadioGr
             presenterVeriff.handleVeriffResult(statusCode,sessionCode)
         }else if (requestCode == Constants.HELLOSIGN_REQUEST_CODE ) {
             if (resultCode == Activity.RESULT_OK) {
-                presenterCreateAcc.createNewWorker(
-                    NewWorkerRequest(
+                //Submit Paperwork
+                getUserInfo()
+                presenterCreateAcc.submitPaperwork(
+                    WorkerPaperwork(
                         Constants.PUZZL_COMPANY_ID,
                         Constants.PUZZL_WORKER_ID,
-                        UserSingleton.firstName,
-                        UserSingleton.lastName,
-                        UserSingleton.middle_initial,
-                        UserSingleton.dob,
-                        PuzzleSingleton.workerInfoModel.title,
-                        UserSingleton.address,
-                        UserSingleton.city,
-                        UserSingleton.state,
-                        UserSingleton.zip,
-                        UserSingleton.ssn,
-                        UserSingleton.last4_ssn,
                         UserSingleton.email,
-                        UserSingleton.password,
-                        PuzzleSingleton.workerInfoModel.default_wage,
-                        PuzzleSingleton.workerInfoModel.default_ot_wage,
-                        PuzzleSingleton.workerInfoModel.createdAt,
                         PuzzleSingleton.hellosign.employee_sigId,
                         PuzzleSingleton.hellosign.company_sigId,
-                        PuzzleSingleton.hellosign.signature_request_id,
-                        PuzzleSingleton.veriff.id,
-                        null
+                        PuzzleSingleton.hellosign.signature_request_id
                     )
                 )
+                (activity as VeriffActivity).replaceFragment(FinishFragment(),true)
+
             }else{
                 Toast.makeText(context,"You didn't fill in the document",Toast.LENGTH_LONG).show()
             }
         }else if (requestCode == Constants.TAKE_PHOTO && data != null && resultCode == Activity.RESULT_OK){
+            //Submit Worker Profile
+            getUserInfo()
+
             val imageBitmap = data.extras?.get("data") as Bitmap
             val byteArrayOutputStream = ByteArrayOutputStream()
             imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
             val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
-            signW2()
+            //TODO: get SSCard URL
+            val url = HttpUrl.parse("https://api.joinpuzzl.com/generate-sscard-put-url")?.newBuilder()
+                ?.addQueryParameter("Key", UserSingleton.email + "-sscard")?.addQueryParameter("ContentType", "image/png")
+                ?.build()
+            println("BUILT URL")
+            val getSSCardRequest =  Request.Builder().url(url).addHeader("Content-Type", "image/png").build()
+            println("CREATED REQUEST")
+            val SSCardclient = OkHttpClient()
+//            val SSCardUrl = ""
+            println("ESTABLISHED CLIENT")
+//            val SSCardResponse = SSCardclient.newCall(getSSCardRequest).execute()
+//            println("SENT QUERY AND GOT RESPONSE")
+//            val token = SSCardResponse.body()?.string()
+//            if(SSCardResponse.code() == 200){
+//                println("GET SSCARD URL SUCCESS")
+//                println(token)
+//            }
+            SSCardclient.newCall(getSSCardRequest).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    response.use {
+                        if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+//                        println(response.body()?.string())
+                        val body = response.body()?.string()
+                        println("LETS GET THE URL!!!!!!!!!!!!!")
+                        val Jobject = JSONObject(body)
+                        println("LETS GET THE BODY")
+                        println(body)
+                        val tempURL = Jobject.getJSONObject("data").get("putURL")
+                        val SSCardURL = HttpUrl.parse(tempURL.toString())?.newBuilder()?.build()
+                        val SSCardBody = RequestBody.create(MediaType.parse("image/png"), byteArray)
+                        val uploadSSCard = Request.Builder().url(SSCardURL).put(SSCardBody).addHeader("Content-Type", "image/png").build()
+
+                        SSCardclient.newCall(uploadSSCard).enqueue(object : Callback {
+                            override fun onFailure(call: Call, e: IOException) {
+                                e.printStackTrace()
+                            }
+
+                            override fun onResponse(call: Call, response: Response) {
+                                response.use {
+                                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                                    println()
+                                    println("SUCCESSFUL PUSH GO CHECK S3")
+                                    println(document)
+                                    startVeriff(PuzzleSingleton.veriff.sessionToken, PuzzleSingleton.veriff.url)
+
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+
+
+            //TODO: Put SSCard URL
+
+
+
+//            presenterVeriff.startSession(document)
+//            signW2()
         }
     }
 
@@ -186,6 +287,7 @@ class CreateAccountFragment : Fragment(), VeriffView, CreateAccountView, RadioGr
     }
 
     override fun showHellosign() {
+        println("SHOW HELLO SIGN")
         startActivityForResult(Intent(context, WebViewActivity::class.java),Constants.HELLOSIGN_REQUEST_CODE)
     }
 

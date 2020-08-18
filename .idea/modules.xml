@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PuzzleSample.iml" filepath="$PROJECT_DIR$/PuzzleSample.iml" group="PuzzleSample" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="PuzzleSample/app" />
-      <module fileurl="file://$PROJECT_DIR$/puzzle_library/puzzle_library.iml" filepath="$PROJECT_DIR$/puzzle_library/puzzle_library.iml" group="PuzzleSample/puzzle_library" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PuzzleSample.iml" filepath="$PROJECT_DIR$/.idea/modules/PuzzleSample.iml" group="PuzzleSample" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="PuzzleSample/app" />
+      <module fileurl="file://$PROJECT_DIR$/puzzl-android-mobile-onboarding.iml" filepath="$PROJECT_DIR$/puzzl-android-mobile-onboarding.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/puzzle_library/puzzle_library.iml" filepath="$PROJECT_DIR$/.idea/modules/puzzle_library/puzzle_library.iml" group="PuzzleSample/puzzle_library" />
     </modules>
   </component>
 </project>

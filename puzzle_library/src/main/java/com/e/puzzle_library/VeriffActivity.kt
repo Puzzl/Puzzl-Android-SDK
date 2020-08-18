@@ -31,7 +31,15 @@ class VeriffActivity : AppCompatActivity(),HasSupportFragmentInjector {
 
 
 
-        if (intent.getStringExtra("api_key") != null) PuzzleSingleton.api_key = intent.getStringExtra("api_key") else throw NullPointerException("Puzzle Api Key is null")
+        if (intent.getStringExtra("api_key") != null ) {
+            PuzzleSingleton.api_key = intent.getStringExtra("api_key")
+        } else throw NullPointerException("Puzzle Api Key is null")
+        if (intent.getStringExtra("employeeID") != null ) {
+            Constants.PUZZL_WORKER_ID = intent.getStringExtra("employeeID")
+        } else throw NullPointerException("Employee ID is null")
+        if (intent.getStringExtra("companyID") != null ) {
+            Constants.PUZZL_COMPANY_ID = intent.getStringExtra("companyID")
+        } else throw NullPointerException("Company ID is null")
 
         replaceFragment(OnBoardingFragment(),true)
 

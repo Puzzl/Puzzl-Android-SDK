@@ -1,7 +1,6 @@
 package com.library.createacc
 
-import com.e.puzzle_library.network.model.NewWorkerRequest
-import com.e.puzzle_library.network.model.SignW2Response
+import com.e.puzzle_library.network.model.*
 import com.google.android.material.textfield.TextInputEditText
 import com.library.network.model.SignW2Request
 import com.library.network.repository.PuzzlRepository
@@ -18,6 +17,7 @@ class CreateAccountPresenter (private val repository : PuzzlRepository,private  
             result ->
             view.hintProgressBar()
                 PuzzleSingleton.hellosign = result
+            println("START HELLO SIGN")
             view.showHellosign()
         },{error -> view.hintProgressBar()}))
     }
@@ -28,12 +28,28 @@ class CreateAccountPresenter (private val repository : PuzzlRepository,private  
         views.add(confirmPassword)
     }
 
-    fun createNewWorker(newWorker : NewWorkerRequest){
+    fun submitPaperwork(paperwork: WorkerPaperwork ){
         view.showProgressbar()
-        disposable.add(repository.createWorker(newWorker).observeOn(AndroidSchedulers.mainThread()).subscribe({
+        disposable.add(repository.submitWorkerPaperwork(paperwork).observeOn(AndroidSchedulers.mainThread()).subscribe({
             result ->
             view.hintProgressBar()
             view.showFinishScreen()
+        },{error -> view.hintProgressBar()}))
+    }
+
+    fun submitWorkerProfileInfo(profileInfo: WorkerProfileInfo){
+        view.showProgressbar()
+        disposable.add(repository.submitWorkerProfileInfo(profileInfo).observeOn(AndroidSchedulers.mainThread()).subscribe({
+                result ->
+            view.hintProgressBar()
+        },{error -> view.hintProgressBar()}))
+    }
+
+    fun submitWorkerVerification(verification: WorkerVerification){
+        view.showProgressbar()
+        disposable.add(repository.submitWorkerVerification(verification).observeOn(AndroidSchedulers.mainThread()).subscribe({
+                result ->
+            view.hintProgressBar()
         },{error -> view.hintProgressBar()}))
     }
 

@@ -1,8 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.veriff:libwebrtc:1.0.16@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ea70b133da4cdaa95d8264cef59ba9e9/jetified-libwebrtc-1.0.16/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ea70b133da4cdaa95d8264cef59ba9e9/jetified-libwebrtc-1.0.16/res" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/ea70b133da4cdaa95d8264cef59ba9e9/jetified-libwebrtc-1.0.16/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/ea70b133da4cdaa95d8264cef59ba9e9/jetified-libwebrtc-1.0.16/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../.gradle/caches/transforms-2/files-2.1/ea70b133da4cdaa95d8264cef59ba9e9/jetified-libwebrtc-1.0.16/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

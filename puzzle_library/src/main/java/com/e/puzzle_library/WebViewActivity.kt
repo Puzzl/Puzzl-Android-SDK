@@ -2,15 +2,15 @@ package com.e.puzzle_library
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import android.webkit.JavascriptInterface
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.library.singletons.PuzzleSingleton
 import kotlinx.android.synthetic.main.activity_web_view.*
+import org.json.JSONObject
+
 
 class WebViewActivity : AppCompatActivity() {
 
@@ -25,17 +25,34 @@ class WebViewActivity : AppCompatActivity() {
 
 
         webview.settings.javaScriptEnabled = true
+        val url = createUrl()
 
-        webview.loadUrl(createUrl())
+        println("URL")
+        println(url)
+        webview.settings.builtInZoomControls = true;
+        webview.settings.displayZoomControls = false;
+        webview.loadUrl(url)
 
+        println("**** ADDING LISTENER ****")
         webview.addJavascriptInterface(WebViewJavascriptInterface(this),"Android")
     }
 
     class WebViewJavascriptInterface(private val mContext: Context) {
         @JavascriptInterface
             fun parseHellosign(message: String?) {
-            (mContext as WebViewActivity).setResult(Activity.RESULT_OK)
-            mContext.finish()
+            try {
+                val data = JSONObject(message) //Convert from string to object, can also use JSONArray
+                println("************ PARSE HELLO SIGN ************")
+                println(data)
+                println("************ END HELLO SIGN ************")
+                if(data.get("status") == "finished"){
+                    (mContext as WebViewActivity).setResult(Activity.RESULT_OK)
+                    mContext.finish()
+                }
+            } catch (ex: Exception) {
+                println("ERROR WITH HELLO SIGN STRING")
+            }
+            //TODO: check if JSON object is "finished", then send result ok and finish
         }
     }
     private fun createUrl () : String{
